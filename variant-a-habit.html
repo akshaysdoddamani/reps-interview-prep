@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reps — Stay interview-ready, always</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F5F0;
+    --paper-dim:#EFEBE2;
+    --ink:#14213D;
+    --ink-soft:#4A5268;
+    --muted:#8A8F98;
+    --jade:#2E7D6B;
+    --jade-dim:#DCEAE5;
+    --amber:#E8B94A;
+    --grid-empty:#E4E1D8;
+    --line:#DAD5C8;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+  }
+  h1,h2,h3{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;}
+
+  /* TOP FLOATING SWITCHER */
+  .ab-bar {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid #2B3856;
+  }
+  .ab-bar .links { display: flex; gap: 8px; }
+  .ab-bar a {
+    padding: 5px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .ab-bar a.active {
+    background: var(--jade);
+    color: #fff;
+  }
+  .ab-bar a.inactive {
+    background: #253352;
+    color: #C7CCDA;
+  }
+  .ab-bar a.inactive:hover {
+    background: #334468;
+  }
+
+  /* NAV */
+  nav.top{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:22px 28px;max-width:1120px;margin:0 auto;
+  }
+  .wordmark{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .wordmark .dot{width:8px;height:8px;background:var(--jade);border-radius:2px;display:inline-block;}
+  .nav-tag{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+    border:1px solid var(--line);padding:6px 12px;border-radius:20px;
+  }
+
+  /* HERO */
+  .hero{
+    display:grid;grid-template-columns:1.05fr 0.95fr;gap:56px;
+    align-items:center;padding:56px 0 72px;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--jade);
+    text-transform:uppercase;letter-spacing:0.08em;margin-bottom:16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .eyebrow::before{content:'●';font-size:8px;}
+  h1.headline{
+    font-size:clamp(32px,4.2vw,50px);line-height:1.08;margin-bottom:20px;
+  }
+  h1.headline em{
+    font-style:normal;color:var(--jade);
+  }
+  .sub{
+    font-size:17.5px;color:var(--ink-soft);max-width:480px;margin-bottom:30px;
+  }
+  .cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:600;font-size:15px;
+    padding:13px 24px;border-radius:8px;border:none;cursor:pointer;
+    text-decoration:none;display:inline-block;transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper);}
+  .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(20,33,61,0.18);}
+  .btn-ghost{color:var(--ink-soft);font-size:14px;}
+  .fine{font-size:13px;color:var(--muted);margin-top:10px;}
+
+  /* STREAK GRID — signature element */
+  .streak-card{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:26px 26px 22px;box-shadow:0 1px 0 var(--line);
+  }
+  .streak-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px;}
+  .streak-head .label{font-size:13px;color:var(--muted);}
+  .streak-head .count{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px;color:var(--jade);}
+  .grid{
+    display:grid;grid-template-columns:repeat(18,1fr);gap:4px;
+  }
+  .cell{
+    aspect-ratio:1;border-radius:3px;background:var(--grid-empty);
+    opacity:0;transform:scale(.4);
+    animation:pop .35s ease forwards;
+  }
+  .cell.on{background:var(--jade);}
+  .cell.hot{background:var(--amber);}
+  @keyframes pop{to{opacity:1;transform:scale(1);}}
+  .streak-foot{display:flex;justify-content:space-between;margin-top:16px;font-size:12px;color:var(--muted);}
+  .streak-foot .flame{color:var(--amber);font-family:'JetBrains Mono',monospace;}
+
+  /* SECTIONS */
+  section{padding:64px 0;border-top:1px solid var(--line);}
+  .section-head{max-width:560px;margin-bottom:36px;}
+  .section-head .eyebrow{margin-bottom:10px;}
+  .section-head h2{font-size:clamp(24px,3vw,32px);}
+  .section-head p{color:var(--ink-soft);font-size:16px;margin-top:10px;}
+
+  /* DEMO QUESTION */
+  .demo{
+    background:#fff;border:1px solid var(--line);border-radius:16px;
+    padding:32px;max-width:680px;
+  }
+  .demo .tag{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--jade);
+    background:var(--jade-dim);padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:16px;
+  }
+  .demo p.q{font-size:18px;font-weight:500;margin:0 0 22px;line-height:1.4;}
+  .choices{display:flex;flex-direction:column;gap:10px;}
+  .choice{
+    text-align:left;padding:13px 16px;border:1px solid var(--line);border-radius:10px;
+    background:var(--paper);cursor:pointer;font-size:14.5px;font-family:'Inter',sans-serif;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .choice:hover{border-color:var(--jade);}
+  .choice.correct{border-color:var(--jade);background:var(--jade-dim);}
+  .choice.wrong{border-color:#C97B6E;background:#F6E7E4;}
+  .reveal{
+    margin-top:20px;padding-top:20px;border-top:1px dashed var(--line);
+    font-size:14.5px;color:var(--ink-soft);display:none;
+  }
+  .reveal.show{display:block;}
+  .reveal strong{color:var(--ink);}
+
+  /* HOW IT WORKS */
+  .cadence{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .cadence-item{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;
+  }
+  .cadence-item .unit{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--jade);
+    text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;
+  }
+  .cadence-item h3{font-size:18px;margin-bottom:8px;}
+  .cadence-item p{font-size:14.5px;color:var(--ink-soft);margin:0;}
+
+  /* WTP FORM */
+  .research-box{
+    background:var(--ink);color:var(--paper);border-radius:20px;padding:44px;
+  }
+  .research-box .section-head p{color:#C7CCDA;}
+  .research-box .section-head .eyebrow{color:var(--amber);}
+  .q-block{margin-bottom:30px;}
+  .q-block label.qtitle{
+    display:block;font-weight:600;font-size:15px;margin-bottom:14px;
+  }
+  .opts{display:flex;flex-wrap:wrap;gap:10px;}
+  .opt{
+    position:relative;
+  }
+  .opt input{position:absolute;opacity:0;}
+  .opt label{
+    display:block;padding:11px 18px;border:1px solid #3A4360;border-radius:24px;
+    font-size:14px;cursor:pointer;transition:all .15s ease;font-family:'JetBrains Mono',monospace;
+  }
+  .opt input:checked + label{
+    background:var(--jade);border-color:var(--jade);color:#fff;
+  }
+  input[type=email]{
+    width:100%;max-width:360px;padding:13px 16px;border-radius:8px;border:1px solid #3A4360;
+    background:#1C2848;color:var(--paper);font-family:'Inter',sans-serif;font-size:14.5px;
+  }
+  input[type=email]::placeholder{color:#7A83A0;}
+  .research-box .btn-primary{background:var(--amber);color:var(--ink);margin-top:8px;}
+  .research-box .btn-primary:hover{box-shadow:0 6px 16px rgba(232,185,74,0.25);}
+  .thanks{display:none;text-align:center;padding:30px 0;}
+  .thanks.show{display:block;}
+  .thanks h3{color:var(--paper);margin-bottom:8px;}
+  .thanks p{color:#C7CCDA;font-size:14.5px;}
+
+  footer{padding:36px 0 50px;text-align:center;color:var(--muted);font-size:13px;}
+
+  @media(max-width:860px){
+    .hero{grid-template-columns:1fr;gap:40px;}
+    .cadence{grid-template-columns:1fr;}
+    .grid{grid-template-columns:repeat(12,1fr);}
+    .research-box{padding:28px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating Switcher -->
+<div class="ab-bar">
+  <span>⚡ Testing A/B Framing Variants</span>
+  <div class="links">
+    <a href="variant-a-habit.html" class="active">Variant A: Habit Framing</a>
+    <a href="variant-b-sprint.html" class="inactive">Variant B: Sprint Framing</a>
+  </div>
+</div>
+
+<nav class="top">
+  <div class="wordmark"><span class="dot"></span>reps</div>
+  <div class="nav-tag">for data scientists</div>
+</nav>
+
+<div class="wrap">
+  <section class="hero" style="border-top:none;padding-top:20px;">
+    <div>
+      <div class="eyebrow">early access · data science track</div>
+      <h1 class="headline">Don't cram for interviews.<br><em>Stay ready for them.</em></h1>
+      <p class="sub">5 minutes a day keeps your SQL, stats, and ML judgment interview-sharp — so the next opportunity doesn't start with three weeks of panic-studying.</p>
+      <div class="cta-row">
+        <a href="#research" class="btn btn-primary">Shape what we build →</a>
+        <a href="#try" class="btn btn-ghost">Try a practice question ↓</a>
+      </div>
+      <div class="fine">No product yet — we're validating the idea with real practitioners first.</div>
+    </div>
+    <div class="streak-card">
+      <div class="streak-head">
+        <span class="label">Your last 18 weeks</span>
+        <span class="count" id="streakCount">— streak</span>
+      </div>
+      <div class="grid" id="streakGrid"></div>
+      <div class="streak-foot">
+        <span>less</span>
+        <span class="flame">this is what staying sharp looks like</span>
+        <span>more</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="try">
+    <div class="section-head">
+      <div class="eyebrow">today's rep</div>
+      <h2>This is what a daily practice looks like</h2>
+      <p>One real question. One honest answer. No fluff — this is the actual format, not a marketing mockup.</p>
+    </div>
+    <div class="demo">
+      <span class="tag">ML JUDGMENT · 90 SEC</span>
+      <p class="q">Your fraud-detection model hits 94% accuracy and the fraud team is furious. What's most likely wrong?</p>
+      <div class="choices" id="choices">
+        <button class="choice" data-correct="false">The model is overfitting to training data</button>
+        <button class="choice" data-correct="true">Accuracy is misleading — the classes are imbalanced</button>
+        <button class="choice" data-correct="false">The feature set is too small</button>
+      </div>
+      <div class="reveal" id="reveal">
+        <strong>Class imbalance.</strong> If fraud is under 1% of transactions, a model that predicts "not fraud" every time still scores ~99% accuracy while catching zero fraud. This is the kind of question that separates memorized definitions from real judgment — and it's exactly the kind of thing a once-a-month cram session doesn't build.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">how it works</div>
+      <h2>Three cadences, one habit</h2>
+    </div>
+    <div class="cadence">
+      <div class="cadence-item">
+        <div class="unit">Daily</div>
+        <h3>One concept, two reps</h3>
+        <p>A short concept card plus 2-3 questions rotating across SQL, stats, and ML reasoning. Five minutes, most days.</p>
+      </div>
+      <div class="cadence-item">
+        <div class="unit">Weekly</div>
+        <h3>One deeper question</h3>
+        <p>A longer, interview-style problem you answer out loud or in writing — the kind that actually shows up in onsites.</p>
+      </div>
+      <div class="cadence-item">
+        <div class="unit">Monthly</div>
+        <h3>A full mock interview</h3>
+        <p>Sit a proper mock round — solo with AI or matched with a peer — and see how the habit adds up.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="research">
+    <div class="research-box">
+      <div class="section-head">
+        <div class="eyebrow">help us build this right</div>
+        <h2>We haven't built the product yet — you're deciding what's worth building</h2>
+        <p>Two minutes. Your honest answers directly shape whether this gets built, and how it's priced.</p>
+      </div>
+
+      <form id="wtpForm">
+        <div class="q-block">
+          <label class="qtitle">Where are you right now?</label>
+          <div class="opts">
+            <div class="opt"><input type="radio" name="status" id="s1" value="employed-not-looking"><label for="s1">Employed, not looking</label></div>
+            <div class="opt"><input type="radio" name="status" id="s2" value="employed-open"><label for="s2">Employed, casually open</label></div>
+            <div class="opt"><input type="radio" name="status" id="s3" value="actively-searching"><label for="s3">Actively job hunting</label></div>
+            <div class="opt"><input type="radio" name="status" id="s4" value="student"><label for="s4">Student / bootcamp</label></div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <label class="qtitle">If you were NOT job hunting, would you still practice a few minutes a week just to stay sharp?</label>
+          <div class="opts">
+            <div class="opt"><input type="radio" name="habit" id="h1" value="yes"><label for="h1">Yes, genuinely</label></div>
+            <div class="opt"><input type="radio" name="habit" id="h2" value="maybe"><label for="h2">Maybe, depends on effort</label></div>
+            <div class="opt"><input type="radio" name="habit" id="h3" value="no"><label for="h3">No — only when hunting</label></div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <label class="qtitle">What would you realistically pay per month for this?</label>
+          <div class="opts">
+            <div class="opt"><input type="radio" name="price" id="p0" value="0"><label for="p0">$0 — free only</label></div>
+            <div class="opt"><input type="radio" name="price" id="p1" value="5-9"><label for="p1">$5–9</label></div>
+            <div class="opt"><input type="radio" name="price" id="p2" value="10-14"><label for="p2">$10–14</label></div>
+            <div class="opt"><input type="radio" name="price" id="p3" value="15-19"><label for="p3">$15–19</label></div>
+            <div class="opt"><input type="radio" name="price" id="p4" value="20+"><label for="p4">$20+</label></div>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <label class="qtitle">Email (optional — for early access, no spam)</label>
+          <input type="email" name="email" placeholder="you@company.com">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit my answers</button>
+      </form>
+
+      <div class="thanks" id="thanks">
+        <h3>Thanks — genuinely helpful.</h3>
+        <p>We'll follow up if your answers shape the next version. No spam, ever.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>Reps — an idea we're testing, not a product yet. · variant A / habit framing</footer>
+
+<script>
+  // Streak grid — animated fill, mostly on with a few gaps + hot streak, decorative
+  const grid = document.getElementById('streakGrid');
+  const total = 18*7;
+  const pattern = [];
+  for(let i=0;i<total;i++){
+    const r = Math.random();
+    if(i > total-14) pattern.push('hot');
+    else if(r > 0.82) pattern.push('off');
+    else pattern.push('on');
+  }
+  pattern.forEach((state, i)=>{
+    const d = document.createElement('div');
+    d.className = 'cell' + (state==='on'?' on':state==='hot'?' hot':'');
+    d.style.animationDelay = (i*4) + 'ms';
+    grid.appendChild(d);
+  });
+  document.getElementById('streakCount').textContent = '112-day streak';
+
+  // Demo question interaction
+  document.querySelectorAll('#choices .choice').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('#choices .choice').forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.correct === 'true') b.classList.add('correct');
+      });
+      if(btn.dataset.correct !== 'true') btn.classList.add('wrong');
+      document.getElementById('reveal').classList.add('show');
+    });
+  });
+
+  // WTP form — save submission to localStorage
+  document.getElementById('wtpForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = {
+      variant: 'A',
+      status: formData.get('status'),
+      habit: formData.get('habit'),
+      price: formData.get('price'),
+      email: formData.get('email'),
+      submittedAt: new Date().toISOString()
+    };
+
+    const existing = JSON.parse(localStorage.getItem('reps_wtp_submissions') || '[]');
+    existing.push(data);
+    localStorage.setItem('reps_wtp_submissions', JSON.stringify(existing));
+
+    this.style.display = 'none';
+    document.getElementById('thanks').classList.add('show');
+  });
+</script>
+
+</body>
+</html>
